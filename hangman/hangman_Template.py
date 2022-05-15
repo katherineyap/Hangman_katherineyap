@@ -4,6 +4,7 @@ The prints have to contain the same text as indicated, don't add any more prints
 or you will get 0 for this assignment.
 '''
 import random
+from re import A
 
 class Hangman:
     '''
@@ -45,8 +46,17 @@ class Hangman:
         # TODO 2: Print two message upon initialization:
         # 1. "The mistery word has {num_letters} characters"
         # 2. {word_guessed}
-        pass
+        self.num_lives = num_lives
+        self.word_list = word_list
+        self.word = random.choice(word_list)
+        self.num_letters = len(self.word)
+        self.word_guessed = ['_'] * self.num_letters
+        self.list_letter = []
 
+        print (f"The mistery word has", {self.num_letters}, "characters")
+        print (self.word_guessed)
+
+                    
     def check_letter(self, letter) -> None:
         '''
         Checks if the letter is in the word.
@@ -64,8 +74,22 @@ class Hangman:
         # TODO 3: If the letter is in the word, the number of UNIQUE letters in the word that have not been guessed yet has to be reduced by 1
         # TODO 3: If the letter is not in the word, reduce the number of lives by 1
         # Be careful! A letter can contain the same letter more than once. TIP: Take a look at the index() method in the string class
-        pass
-
+        if letter in self.word:
+            self.num_letters -= 1
+            self.word_guessed += letter 
+            print (f'Nice!', letter, 'is in the word!')
+            print (self.word_guessed)
+            if self.num_letters == 0:
+                print ('Congratulations! You won!')
+        if letter not in self.word:
+            self.num_lives -=1
+            self.list_letter.append(letter)
+            print (f'Sorry',letter,'is not in the word')
+            print (f'You have', self.num_lives, 'lives left.')
+            if self.num_lives == 0:
+                print (f'You lost! The word was', self.word)
+        return self.ask_letter()
+           
     def ask_letter(self):
         '''
         Asks the user for a letter and checks two things:
@@ -76,31 +100,34 @@ class Hangman:
         # TODO 1: Ask the user for a letter iteratively until the user enters a valid letter
         # TODO 1: Assign the letter to a variable called `letter`
         # TODO 1: The letter has to comply with the following criteria: It has to be a single character. If it is not, print "Please, enter just one character"
-    while True:
-        print ('please enter a letter')
-        letter = input()
-        if len(letter) != 1:
-            print ("Please, enter just one character")
-        # TODO 2. It has to be a letter that has not been tried yet. Use the list_letters attribute to check this. If it has been tried, print "{letter} was already tried".
-        # TODO 3: If the letter is valid, call the check_letter method
-        pass
+        while True:
+            print ('please enter a letter')
+            letter = input().lower()
+            if len(letter) > 1:
+                print ("Please, enter just one character")
+            # TODO 2. It has to be a letter that has not been tried yet. Use the list_letters attribute to check this. If it has been tried, print "{letter} was already tried".
+            # TODO 3: If the letter is valid, call the check_letter method
+            else:
+                if letter in self.list_letter:
+                    print (f"{letter},was already tried.")
+                else:
+                    self.check_letter(letter)
 
-ask_letter()
-
-def play_game(word_list):
-    # As an aid, part of the code is already provided:
-    game = Hangman(word_list, num_lives=5)
-    # TODO 1: To test this task, you can call the ask_letter method
-    # TODO 2: To test this task, upon initialization, two messages should be printed 
-    # TODO 3: To test this task, you call the ask_letter method and check if the letter is in the word
-    
-    # TODO 4: Iteratively ask the user for a letter until the user guesses the word or runs out of lives
-    # If the user guesses the word, print "Congratulations! You won!"
-    # If the user runs out of lives, print "You lost! The word was {word}"
-
-pass
+    def play_game(self, word_list):
+        # As an aid, part of the code is already provided:
+        game = Hangman(word_list, num_lives=5)
+        # TODO 1: To test this task, you can call the ask_letter method
+        # TODO 2: To test this task, upon initialization, two messages should be printed 
+        # TODO 3: To test this task, you call the ask_letter method and check if the letter is in the word
+        # TODO 4: Iteratively ask the user for a letter until the user guesses the word or runs out of lives
+        # If the user guesses the word, print "Congratulations! You won!"
+        # If the user runs out of lives, print "You lost! The word was {word}"
+  
 
 if __name__ == '__main__':
+
     word_list = ['apple', 'banana', 'orange', 'pear', 'strawberry', 'watermelon']
-    play_game(word_list)
-# %%
+    test = Hangman(word_list, num_lives=5)
+    test.ask_letter()
+
+
