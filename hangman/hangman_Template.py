@@ -4,7 +4,7 @@ The prints have to contain the same text as indicated, don't add any more prints
 or you will get 0 for this assignment.
 '''
 import random
-from re import A
+from re import A, X
 
 class Hangman:
     '''
@@ -55,7 +55,6 @@ class Hangman:
 
         print (f"The mistery word has", {self.num_letters}, "characters")
         print (self.word_guessed)
-
                     
     def check_letter(self, letter) -> None:
         '''
@@ -76,11 +75,13 @@ class Hangman:
         # Be careful! A letter can contain the same letter more than once. TIP: Take a look at the index() method in the string class
         if letter in self.word:
             self.num_letters -= 1
-            self.word_guessed += letter 
+            for i in range(len(self.word)):
+                if list(self.word)[i] == letter:
+                    self.word_guessed[i] = letter
             print (f'Nice!', letter, 'is in the word!')
             print (self.word_guessed)
             if self.num_letters == 0:
-                print ('Congratulations! You won!')
+                print ('Congratulations! You won! The word was',self.word)
         if letter not in self.word:
             self.num_lives -=1
             self.list_letter.append(letter)
