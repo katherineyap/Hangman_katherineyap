@@ -4,7 +4,81 @@ The prints have to contain the same text as indicated, don't add any more prints
 or you will get 0 for this assignment.
 '''
 import random
-from re import A, X
+
+hangman_display = [
+"""
+   ________               
+    |/   |                   
+    |   (_)                  
+    |    |                     
+    |                       
+    |                           
+    |                            
+    |___                    
+    HA _ _ _ _ _""",
+
+"""
+   ________               
+    |/   |                   
+    |   (_)                  
+    |    |                     
+    |    |                    
+    |                           
+    |                            
+    |___                    
+    HAN _ _ _ _""",
+
+
+"""
+   _________             
+    |/   |               
+    |   (_)                   
+    |   /|                     
+    |    |                    
+    |                        
+    |                          
+    |___                          
+    HANG _ _ _""",
+
+
+"""
+   _________              
+    |/   |                     
+    |   (_)                     
+    |   /|\                    
+    |    |                       
+    |                             
+    |                            
+    |___                          
+    HANGM _ _""",
+
+
+
+"""
+   ________                   
+    |/   |                         
+    |   (_)                      
+    |   /|\                             
+    |    |                          
+    |   /                            
+    |                                  
+    |___                              
+    HANGMA _""",
+
+
+"""
+   ________
+    |/   |     
+    |   (_)    
+    |   /|\           
+    |    |        
+    |   / \        
+    |               
+    |___           
+    HANGMAN"""
+
+]
+
 
 class Hangman:
     '''
@@ -41,7 +115,7 @@ class Hangman:
     ask_letter()
         Asks the user for a letter.
     '''
-    def __init__(self, word_list, num_lives=5):
+    def __init__(self, word_list, num_lives=5, display=0):
         # TODO 2: Initialize the attributes as indicated in the docstring
         # TODO 2: Print two message upon initialization:
         # 1. "The mistery word has {num_letters} characters"
@@ -52,6 +126,7 @@ class Hangman:
         self.num_letters = len(self.word)
         self.word_guessed = ['_'] * self.num_letters
         self.list_letter = []
+        self.display = display
 
         print (f"The mistery word has", {self.num_letters}, "characters")
         print (self.word_guessed)
@@ -75,18 +150,19 @@ class Hangman:
         # Be careful! A letter can contain the same letter more than once. TIP: Take a look at the index() method in the string class
         if letter in self.word:
             self.num_letters -= 1
-            for i in range(len(self.word)):
-                if list(self.word)[i] == letter:
-                    self.word_guessed[i] = letter
+            for index,value in enumerate(self.word):
+                if value == letter:
+                    self.word_guessed[index] = letter
             print (f'Nice!', letter, 'is in the word!')
             print (self.word_guessed)
             if self.num_letters == 0:
                 print ('Congratulations! You won! The word was',self.word)
         if letter not in self.word:
             self.num_lives -=1
+            self.display +=1
             self.list_letter.append(letter)
             print (f'Sorry',letter,'is not in the word')
-            print (f'You have', self.num_lives, 'lives left.')
+            print (f'You have', self.num_lives, 'lives left.',hangman_display[self.display] )
             if self.num_lives == 0:
                 print (f'You lost! The word was', self.word)
         return self.ask_letter()
