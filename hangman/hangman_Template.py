@@ -172,7 +172,7 @@ class Hangman:
 
         return self.ask_letter()
            
-    def ask_letter(self):
+    def ask_letter(self, num_lives=5):
         '''
         Asks the user for a letter and checks two things:
         1. If the letter has already been tried
@@ -182,7 +182,7 @@ class Hangman:
         # TODO 1: Ask the user for a letter iteratively until the user enters a valid letter
         # TODO 1: Assign the letter to a variable called `letter`
         # TODO 1: The letter has to comply with the following criteria: It has to be a single character. If it is not, print "Please, enter just one character"
-        while True:
+        while self.num_lives > 0:
             print ('please enter a letter')
 
             letter = input().lower()
